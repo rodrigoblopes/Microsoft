@@ -1,0 +1,6 @@
+"Name","Emailaddress","UserPrincipalName","isAdmin","MFA Status","MFA Preferred method","Phone Authentication","Authenticator App","Passwordless","Hello for Business","FIDO2 Security Key","Temporary Access Pass","Authenticator device","Phone number","Email for SSPR","Manager"
+"Bev Eaton","bev@michaeleaton.com.au","bev@michaeleaton.com.au","-","enabled","push","-","True","-","-","-","-","iPhone 8, ","-","-",
+"Chloe O'Dea","chloe@michaeleaton.com.au","chloe@michaeleaton.com.au","-","disabled",,"-","-","-","-","-","-","","-","-",
+"Eaton Admin","Admin@michaeleaton.com.au","Admin@michaeleaton.com.au","-","disabled",,"-","-","-","-","-","-","","-","-",
+"Eaton Reception","reception@michaeleaton.com.au","reception@michaeleaton.com.au","-","disabled",,"-","-","-","-","-","-","","-","-",
+"Michael Eaton","michael@michaeleaton.com.au","michael@michaeleaton.com.au","-","disabled",,"-","-","-","-","-","-","","-","-",

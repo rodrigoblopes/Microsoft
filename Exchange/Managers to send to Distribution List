@@ -1,0 +1,44 @@
+# Connect to Exchange Online
+#$UserCredential = Get-Credential
+#$Session = New-PSSession -ConfigurationName Microsoft.Exchange -ConnectionUri http://outlook.office365.com/powershell-liveid/ -Authentication Basic -AllowRedirection:$true -Credential $UserCredential
+#Import-PSSession $Session -DisableNameChecking:$true -AllowClobber:$true | Out-Null
+
+# Path to the CSV file
+$CsvFilePath = "C:\Temp\users.csv"
+
+# Name for the new distribution group
+$NewGroupName = "DistributionGroupAllowedStaff"
+$NewGroupNameDisplay = "Distribution Group - Allowed Staff"
+
+# Get the list of allowed staff from the CSV file
+$AllowedStaff = Import-Csv -Path $CsvFilePath
+
+# Create a new distribution group
+$New-DistributionGroup -Name $NewGroupNameDisplay -DisplayName $NewGroupNameDisplay -Alias $NewGroupName -Type "Distribution" -PrimarySmtpAddress "$NewGroupName@stbasils.com.au"
+
+# Add allowed staff as members of the new group
+foreach ($staff in $AllowedStaff) {
+    Add-DistributionGroupMember -Identity $NewGroupName -Member $staff.'Identity'
+    Write-Host "Added $($staff.'Identity') to $($NewGroupName)"
+}
+
+# Get all distribution groups
+$DistributionGroups = Get-DistributionGroup -ResultSize Unlimited
+
+foreach ($group in $DistributionGroups) {
+    # Get the current senders of the distribution group
+    (Get-DistributionGroup -Identity $group.Identity).AcceptMessagesOnlyFrom | Get-Recipient | Select-Object -Property DisplayName,Name,PrimarySmtpAddress
+    #$CurrentSenders = Get-DistributionGroupSender -Identity $group.Identity
+}
+    # Remove all current senders
+    foreach ($sender in $CurrentSenders) {
+        Remove-DistributionGroupSender -Identity $group.Identity -Member $sender.Identity -Confirm:$false
+    }
+
+    # Add the new group as a sender to each group
+    Add-DistributionGroupSender -Identity $group.Identity -Member $NewGroupName
+    Write-Host "Added $($NewGroupName) as a sender to $($group.DisplayName)"
+}
+
+# Disconnect the session
+Remove-PSSession $Session
